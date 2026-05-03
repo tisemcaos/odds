@@ -3,59 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚽ Jogos de Futebol - Resultados</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Live Football ⚽</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>⚽ Jogos de Futebol</h1>
-            <p class="subtitle">Resultados e próximos jogos</p>
-        </header>
-
-        <!-- Filtros -->
-        <div class="filtros">
-            <div class="filtro-grupo">
-                <label for="dataFiltro">📅 Selecione a data:</label>
-                <div class="input-group">
-                    <input type="date" id="dataFiltro" />
-                    <button onclick="buscarJogosPorData()" class="btn-buscar">
-                        🔍 Buscar
-                    </button>
-                </div>
-            </div>
-            
-            <div class="botoes-rapidos">
-                <button onclick="buscarJogosHoje()" class="btn-hoje">
-                    📅 Jogos de Hoje
-                </button>
-                <button onclick="buscarJogosOntem()" class="btn-ontem">
-                    ⬅️ Ontem
-                </button>
-                <button onclick="buscarJogosAmanha()" class="btn-amanha">
-                    Amanhã ➡️
-                </button>
-            </div>
-        </div>
-
-        <!-- Loading -->
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-            <p>Carregando jogos...</p>
-        </div>
-
-        <!-- Mensagem de erro -->
-        <div id="erro" class="erro" style="display: none;"></div>
-
-        <!-- Total de jogos -->
-        <div id="totalJogos" class="total-jogos" style="display: none;"></div>
-
-        <!-- Container de jogos -->
-        <div id="jogosContainer" class="jogos-container"></div>
+    <!-- Background animado -->
+    <div class="bg-animation">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
     </div>
 
-    <!-- Scripts -->
-    <script src="config.js"></script>
-    <script src="script.js"></script>
+    <!-- Container principal -->
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header-glass">
+            <div class="logo">
+                <span class="logo-icon">⚽</span>
+                <h1>Live Football</h1>
+                <span class="live-dot"></span>
+            </div>
+            
+            <!-- Navegação -->
+            <nav class="nav-tabs">
+                <button class="tab active" data-tab="ao-vivo">
+                    <i class="fas fa-broadcast-tower"></i> Ao Vivo
+                    <span class="badge" id="liveCount">0</span>
+                </button>
+                <button class="tab" data-tab="hoje">
+                    <i class="fas fa-calendar-day"></i> Hoje
+                </button>
+                <button class="tab" data-tab="proximos">
+                    <i class="fas fa-forward"></i> Próximos
+                </button>
+                <button class="tab" data-tab="favoritos">
+                    <i class="fas fa-star"></i> Favoritos
+                </button>
+            </nav>
+
+            <!-- Barra de busca -->
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar time ou campeonato...">
+            </div>
+        </header>
+
+        <!-- Área principal -->
+        <main>
+            <!-- Filtros rápidos -->
+            <div class="quick-filters">
+                <div class="date-picker">
+                    <input type="date" id="dataFiltro">
+                </div>
+                <div class="league-filter">
+                    <select id="leagueSelect">
+                        <option value="">Todas as ligas</option>
+                    </select>
+                </div>
+                <button class="btn-refresh" onclick="atualizarJogos()">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+
+            <!-- Loading Skeleton -->
+            <div id="loadingSkeleton" class="skeleton-container">
+                <!-- 3 skeletons de cards -->
+            </div>
+
+            <!-- Container de jogos -->
+            <div id="jogosContainer" class="matches-grid"></div>
+
+            <!-- Mensagem vazio -->
+            <div id="emptyState" class="empty-state" style="display:none;">
+                <i class="fas fa-futbol"></i>
+                <h3>Nenhum jogo encontrado</h3>
+                <p>Tente mudar os filtros ou a data</p>
+            </div>
+
+            <!-- Botão flutuante -->
+            <button class="fab" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+        </main>
+    </div>
+
+    <!-- Modal de detalhes -->
+    <div id="matchModal" class="modal">
+        <div class="modal-content glass-card">
+            <span class="close">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

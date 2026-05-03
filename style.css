@@ -1,0 +1,350 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #e2e8f0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-size: 1.1em;
+}
+
+/* Filtros */
+.filtros {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.filtro-grupo {
+    margin-bottom: 15px;
+}
+
+.filtro-grupo label {
+    display: block;
+    margin-bottom: 10px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+input[type="date"] {
+    padding: 12px;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    background: #0f172a;
+    color: #e2e8f0;
+    font-size: 16px;
+    flex: 1;
+    min-width: 200px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="date"]:focus {
+    border-color: #60a5fa;
+}
+
+/* Botões */
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+}
+
+.btn-buscar {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.btn-buscar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
+}
+
+.botoes-rapidos {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-hoje {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.btn-hoje:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-ontem, .btn-amanha {
+    background: #334155;
+}
+
+.btn-ontem:hover, .btn-amanha:hover {
+    background: #475569;
+    transform: translateY(-2px);
+}
+
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 40px;
+}
+
+.spinner {
+    border: 4px solid #334155;
+    border-top: 4px solid #60a5fa;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Erro */
+.erro {
+    background: #7f1d1d;
+    border: 1px solid #991b1b;
+    color: #fca5a5;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Total jogos */
+.total-jogos {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Container de jogos */
+.jogos-container {
+    display: grid;
+    gap: 20px;
+}
+
+/* Card do jogo */
+.jogo-card {
+    background: #1e293b;
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s;
+    border: 2px solid #334155;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.jogo-card:hover {
+    border-color: #60a5fa;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Cabeçalho do campeonato */
+.campeonato-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #334155;
+    flex-wrap: wrap;
+}
+
+.campeonato-header img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.campeonato-nome {
+    font-weight: bold;
+    color: #e2e8f0;
+    font-size: 1.1em;
+    flex: 1;
+}
+
+.campeonato-pais {
+    color: #94a3b8;
+    font-size: 0.9em;
+}
+
+.rodada {
+    background: #334155;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    color: #94a3b8;
+}
+
+/* Placard */
+.placar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 0;
+    gap: 15px;
+}
+
+.time {
+    text-align: center;
+    flex: 1;
+}
+
+.time-logo {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+    transition: transform 0.3s;
+}
+
+.time:hover .time-logo {
+    transform: scale(1.1);
+}
+
+.time-nome {
+    font-weight: 600;
+    color: #e2e8f0;
+    font-size: 0.95em;
+}
+
+.placar {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #60a5fa;
+    min-width: 100px;
+    text-align: center;
+}
+
+.placar-vs {
+    color: #475569;
+}
+
+/* Informações do jogo */
+.info-jogo {
+    text-align: center;
+    color: #94a3b8;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #334155;
+    display: grid;
+    gap: 8px;
+}
+
+.info-data {
+    font-size: 1.1em;
+    color: #e2e8f0;
+}
+
+.info-local {
+    font-size: 0.9em;
+}
+
+/* Status do jogo */
+.status-jogo {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85em;
+    margin: 5px 0;
+}
+
+.status-ao-vivo {
+    background: #7f1d1d;
+    color: #fca5a5;
+    animation: pulse 2s infinite;
+}
+
+.status-agendado {
+    background: #064e3b;
+    color: #6ee7b7;
+}
+
+.status-finalizado {
+    background: #1e293b;
+    color: #94a3b8;
+    border: 1px solid #334155;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2em;
+    }
+    
+    .placar-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .time-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .placar {
+        font-size: 2em;
+        margin: 10px 0;
+    }
+    
+    .botoes-rapidos {
+        justify-content: center;
+    }
+}

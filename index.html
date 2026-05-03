@@ -3,21 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Football ⚽</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="Acompanhe jogos de futebol ao vivo, resultados e próximas partidas">
+    <title>⚽ Live Football - Jogos Ao Vivo</title>
+    
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
 </head>
 <body>
-    <!-- Background animado -->
+    <!-- Background Animado -->
     <div class="bg-animation">
         <div class="circle circle-1"></div>
         <div class="circle circle-2"></div>
         <div class="circle circle-3"></div>
     </div>
 
-    <!-- Container principal -->
+    <!-- Container Principal -->
     <div class="app-container">
-        <!-- Header -->
+        
+        <!-- Header com Glassmorphism -->
         <header class="header-glass">
             <div class="logo">
                 <span class="logo-icon">⚽</span>
@@ -25,70 +34,71 @@
                 <span class="live-dot"></span>
             </div>
             
-            <!-- Navegação -->
+            <!-- Navegação por Tabs -->
             <nav class="nav-tabs">
                 <button class="tab active" data-tab="ao-vivo">
-                    <i class="fas fa-broadcast-tower"></i> Ao Vivo
+                    <i class="fas fa-broadcast-tower"></i> 
+                    Ao Vivo
                     <span class="badge" id="liveCount">0</span>
                 </button>
                 <button class="tab" data-tab="hoje">
-                    <i class="fas fa-calendar-day"></i> Hoje
+                    <i class="fas fa-calendar-day"></i> 
+                    Hoje
                 </button>
                 <button class="tab" data-tab="proximos">
-                    <i class="fas fa-forward"></i> Próximos
+                    <i class="fas fa-forward"></i> 
+                    Próximos
                 </button>
                 <button class="tab" data-tab="favoritos">
-                    <i class="fas fa-star"></i> Favoritos
+                    <i class="fas fa-star"></i> 
+                    Favoritos
                 </button>
             </nav>
 
-            <!-- Barra de busca -->
+            <!-- Barra de Busca -->
             <div class="search-bar">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Buscar time ou campeonato...">
             </div>
         </header>
 
-        <!-- Área principal -->
+        <!-- Área Principal -->
         <main>
-            <!-- Filtros rápidos -->
+            <!-- Filtros Rápidos -->
             <div class="quick-filters">
                 <div class="date-picker">
-                    <input type="date" id="dataFiltro">
+                    <input type="date" id="dataFiltro" title="Selecionar data">
                 </div>
                 <div class="league-filter">
                     <select id="leagueSelect">
-                        <option value="">Todas as ligas</option>
+                        <option value="">🏆 Todas as ligas</option>
                     </select>
                 </div>
-                <button class="btn-refresh" onclick="atualizarJogos()">
+                <button class="btn-refresh" onclick="atualizarJogos()" title="Atualizar jogos">
                     <i class="fas fa-sync-alt"></i>
                 </button>
             </div>
 
             <!-- Loading Skeleton -->
-            <div id="loadingSkeleton" class="skeleton-container">
-                <!-- 3 skeletons de cards -->
+            <div id="loadingSkeleton" class="skeleton-container" style="display: none;">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
             </div>
 
-            <!-- Container de jogos -->
+            <!-- Container de Jogos -->
             <div id="jogosContainer" class="matches-grid"></div>
 
-            <!-- Mensagem vazio -->
-            <div id="emptyState" class="empty-state" style="display:none;">
+            <!-- Estado Vazio -->
+            <div id="emptyState" class="empty-state" style="display: none;">
                 <i class="fas fa-futbol"></i>
                 <h3>Nenhum jogo encontrado</h3>
-                <p>Tente mudar os filtros ou a data</p>
+                <p>Tente mudar os filtros ou selecionar outra data</p>
             </div>
-
-            <!-- Botão flutuante -->
-            <button class="fab" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-                <i class="fas fa-arrow-up"></i>
-            </button>
         </main>
     </div>
 
-    <!-- Modal de detalhes -->
+    <!-- Modal de Detalhes do Jogo -->
     <div id="matchModal" class="modal">
         <div class="modal-content glass-card">
             <span class="close">&times;</span>
@@ -96,10 +106,13 @@
         </div>
     </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/favorites.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/app.js"></script>
+    <!-- Botão Flutuante (Scroll to Top) -->
+    <button class="fab" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

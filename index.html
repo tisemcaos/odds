@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ Jogos de Futebol - Resultados</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>⚽ Jogos de Futebol</h1>
+            <p class="subtitle">Resultados e próximos jogos</p>
+        </header>
+
+        <!-- Filtros -->
+        <div class="filtros">
+            <div class="filtro-grupo">
+                <label for="dataFiltro">📅 Selecione a data:</label>
+                <div class="input-group">
+                    <input type="date" id="dataFiltro" />
+                    <button onclick="buscarJogosPorData()" class="btn-buscar">
+                        🔍 Buscar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="botoes-rapidos">
+                <button onclick="buscarJogosHoje()" class="btn-hoje">
+                    📅 Jogos de Hoje
+                </button>
+                <button onclick="buscarJogosOntem()" class="btn-ontem">
+                    ⬅️ Ontem
+                </button>
+                <button onclick="buscarJogosAmanha()" class="btn-amanha">
+                    Amanhã ➡️
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Carregando jogos...</p>
+        </div>
+
+        <!-- Mensagem de erro -->
+        <div id="erro" class="erro" style="display: none;"></div>
+
+        <!-- Total de jogos -->
+        <div id="totalJogos" class="total-jogos" style="display: none;"></div>
+
+        <!-- Container de jogos -->
+        <div id="jogosContainer" class="jogos-container"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

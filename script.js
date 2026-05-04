@@ -465,10 +465,15 @@ function quickToggleFavorite(event, teamId, button) {
 class App {
     constructor() {
         this.currentDate = new Date().toISOString().split('T')[0];
+        this.periodoInicial = null;
+        this.periodoFinal = null;
         
-        // Define data atual no input
-        const dataInput = document.getElementById('dataFiltro');
-        if (dataInput) dataInput.value = this.currentDate;
+        // Define data atual nos inputs
+        const dataInicial = document.getElementById('dataInicial');
+        const dataFinal = document.getElementById('dataFinal');
+        
+        if (dataInicial) dataInicial.value = this.currentDate;
+        if (dataFinal) dataFinal.value = this.currentDate;
 
         this.autoRefreshInterval = null;
     }
@@ -479,41 +484,103 @@ class App {
     }
 
     async loadMatches() {
-        try {
-            ui.showLoading();
-            
-            let matches = [];
-            
-            switch(ui.currentTab) {
-                case 'ao-vivo':
-                    matches = await api.getLiveMatches();
-                    break;
-                case 'hoje':
+    try {
+        ui.showLoading();
+        
+        let matches = [];
+        
+        switch(ui.currentTab) {
+            case 'ao-vivo':
+                matches = await api.getLiveMatches();
+                break;
+                
+            case 'hoje':
+                // Se tem período definido, usa ele
+                if (this.periodoInicial && this.periodoFinal) {
+                    matches = await this.loadMatchesInPeriod(this.periodoInicial, this.periodoFinal);
+                } else {
                     matches = await api.getMatchesByDate(this.currentDate);
-                    break;
-                case 'proximos':
-                    const tomorrow = new Date();
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    matches = await api.getMatchesByDate(tomorrow.toISOString().split('T')[0]);
-                    break;
-                case 'favoritos':
+                }
+                break;
+                
+            case 'proximos':
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const dayAfter = new Date();
+                dayAfter.setDate(dayAfter.getDate() + 7);
+                matches = await this.loadMatchesInPeriod(
+                    tomorrow.toISOString().split('T')[0],
+                    dayAfter.toISOString().split('T')[0]
+                );
+                break;
+                
+            case 'favoritos':
+                if (this.periodoInicial && this.periodoFinal) {
+                    matches = await this.loadMatchesInPeriod(this.periodoInicial, this.periodoFinal);
+                } else {
                     matches = await api.getMatchesByDate(this.currentDate);
-                    matches = favorites.getFavoriteMatches(matches);
-                    break;
-                default:
-                    matches = await api.getLiveMatches();
-            }
-
-            ui.allMatches = matches;
-            ui.filterAndRender();
-
-        } catch (error) {
-            console.error('Error:', error);
-            ui.showError(error.message || 'Erro ao carregar jogos');
-        } finally {
-            ui.hideLoading();
+                }
+                matches = favorites.getFavoriteMatches(matches);
+                break;
+                
+            default:
+                matches = await api.getLiveMatches();
         }
+
+        ui.allMatches = matches;
+        ui.filterAndRender();
+
+    } catch (error) {
+        console.error('Error:', error);
+        ui.showError(error.message || 'Erro ao carregar jogos');
+    } finally {
+        ui.hideLoading();
     }
+}
+
+// Novo método para carregar por período
+// Novo método para carregar por período (CORRIGIDO)
+async loadMatchesInPeriod(dataInicial, dataFinal) {
+    try {
+        const start = new Date(dataInicial + 'T00:00:00');
+        const end = new Date(dataFinal + 'T23:59:59');
+        const allMatches = [];
+        
+        // Calcula a diferença em dias
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        // Limita a 30 dias para não sobrecarregar a API
+        if (diffDays > 30) {
+            throw new Error('Período máximo é de 30 dias');
+        }
+        
+        // Busca dia a dia no período
+        let currentDate = new Date(start);
+        for (let i = 0; i <= diffDays; i++) {
+            const dateStr = currentDate.toISOString().split('T')[0];
+            
+            try {
+                const dayMatches = await api.getMatchesByDate(dateStr);
+                if (dayMatches && dayMatches.length > 0) {
+                    allMatches.push(...dayMatches);
+                }
+            } catch (error) {
+                console.warn(`Erro ao buscar data ${dateStr}:`, error);
+                // Continua mesmo com erro em um dia específico
+            }
+            
+            // Avança um dia
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        
+        return allMatches;
+        
+    } catch (error) {
+        console.error('Erro ao carregar período:', error);
+        throw error;
+    }
+}
 
     async loadMatchesByDate(date) {
         this.currentDate = date;
@@ -546,6 +613,95 @@ class App {
             clearInterval(this.autoRefreshInterval);
         }
     }
+}
+
+// ============================================
+// FUNÇÕES DE PERÍODO
+// ============================================
+
+function aplicarFiltroPeriodo() {
+    const dataInicial = document.getElementById('dataInicial').value;
+    const dataFinal = document.getElementById('dataFinal').value;
+    
+    if (!dataInicial || !dataFinal) {
+        alert('⚠️ Selecione as datas inicial e final');
+        return;
+    }
+    
+    if (dataInicial > dataFinal) {
+        alert('⚠️ A data inicial deve ser menor que a data final');
+        return;
+    }
+    
+    // Salva o período na aplicação
+    app.periodoInicial = dataInicial;
+    app.periodoFinal = dataFinal;
+    app.currentDate = null;
+    
+    // Muda para tab 'hoje' (que agora respeita o período)
+    ui.switchTab('hoje');
+    
+    // Remove active dos botões de período rápido
+    document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+    
+    // Carrega os jogos
+    app.loadMatches();
+}
+
+function filtrarPeriodo(periodo, event) {
+    const hoje = new Date();
+    let dataInicial, dataFinal;
+    
+    switch(periodo) {
+        case 'hoje':
+            dataInicial = hoje.toISOString().split('T')[0];
+            dataFinal = hoje.toISOString().split('T')[0];
+            break;
+        case 'semana':
+            const diaSemana = hoje.getDay() || 7; // Domingo = 7
+            dataInicial = new Date(hoje);
+            dataInicial.setDate(hoje.getDate() - diaSemana + 1);
+            dataInicial = dataInicial.toISOString().split('T')[0];
+            
+            dataFinal = new Date(hoje);
+            dataFinal.setDate(hoje.getDate() + (7 - diaSemana));
+            dataFinal = dataFinal.toISOString().split('T')[0];
+            break;
+        case 'mes':
+            dataInicial = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0];
+            dataFinal = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).toISOString().split('T')[0];
+            break;
+        case 'fim-semana':
+            const dia = hoje.getDay();
+            const diasAteSabado = dia === 6 ? 0 : (6 - dia);
+            dataInicial = new Date(hoje);
+            dataInicial.setDate(hoje.getDate() + diasAteSabado);
+            dataInicial = dataInicial.toISOString().split('T')[0];
+            
+            dataFinal = new Date(dataInicial);
+            dataFinal.setDate(dataFinal.getDate() + 1);
+            dataFinal = dataFinal.toISOString().split('T')[0];
+            break;
+        default:
+            dataInicial = hoje.toISOString().split('T')[0];
+            dataFinal = hoje.toISOString().split('T')[0];
+    }
+    
+    document.getElementById('dataInicial').value = dataInicial;
+    document.getElementById('dataFinal').value = dataFinal;
+    
+    app.periodoInicial = dataInicial;
+    app.periodoFinal = dataFinal;
+    app.currentDate = null;
+    
+    // Corrigido: usa o event como parâmetro
+    if (event) {
+        document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.closest('.period-btn').classList.add('active');
+    }
+    
+    ui.switchTab('hoje');
+    app.loadMatches();
 }
 
 // ============================================

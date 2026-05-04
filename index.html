@@ -16,7 +16,6 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
 </head>
 <body>
-
     <!-- Background Animado -->
     <div class="bg-animation">
         <div class="circle circle-1"></div>
@@ -30,22 +29,14 @@
         <!-- Header com Glassmorphism -->
         <header class="header-glass">
             <div class="logo">
-			<img src="logo.png" width="80"
-			
-                 <span class="logo-icon">⚽</span> 
-
+                <span class="logo-icon">⚽</span>
                 <h1>Live Football</h1>
                 <span class="live-dot"></span>
             </div>
             
             <!-- Navegação por Tabs -->
             <nav class="nav-tabs">
-                <button class="tab active" data-tab="ao-vivo">
-                    <i class="fas fa-broadcast-tower"></i> 
-                    Ao Vivo
-                    <span class="badge" id="liveCount">0</span>
-                </button>
-                <button class="tab" data-tab="hoje">
+                <button class="tab active" data-tab="hoje">
                     <i class="fas fa-calendar-day"></i> 
                     Hoje
                 </button>
@@ -53,72 +44,40 @@
                     <i class="fas fa-forward"></i> 
                     Próximos
                 </button>
-                <button class="tab" data-tab="favoritos">
-                    <i class="fas fa-star"></i> 
-                    Favoritos
+                <button class="tab" data-tab="todos">
+                    <i class="fas fa-list"></i> 
+                    Todos
                 </button>
             </nav>
 
             <!-- Barra de Busca -->
             <div class="search-bar">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Buscar time ou campeonato...">
+                <input type="text" id="searchInput" placeholder="Buscar time...">
             </div>
         </header>
 
         <!-- Área Principal -->
         <main>
             <!-- Filtros Rápidos -->
-            <!-- Filtros Rápidos -->
-<div class="quick-filters">
-    <div class="date-picker">
-        <label style="display:block; margin-bottom:5px; color: var(--text-secondary); font-size:0.9em;">
-            <i class="fas fa-calendar-alt"></i> Data Inicial
-        </label>
-        <input type="date" id="dataInicial" title="Data inicial">
-    </div>
-    
-    <div class="date-picker">
-        <label style="display:block; margin-bottom:5px; color: var(--text-secondary); font-size:0.9em;">
-            <i class="fas fa-calendar-check"></i> Data Final
-        </label>
-        <input type="date" id="dataFinal" title="Data final">
-    </div>
-    
-    <div class="league-filter">
-        <label style="display:block; margin-bottom:5px; color: var(--text-secondary); font-size:0.9em;">
-            <i class="fas fa-trophy"></i> Liga
-        </label>
-        <select id="leagueSelect">
-            <option value="">🏆 Todas as ligas</option>
-        </select>
-    </div>
-    
-    <div class="filter-actions">
-        <button class="btn-filter" onclick="aplicarFiltroPeriodo()" title="Buscar no período">
-            <i class="fas fa-filter"></i> Filtrar
-        </button>
-        <button class="btn-refresh" onclick="atualizarJogos()" title="Atualizar">
-            <i class="fas fa-sync-alt"></i>
-        </button>
-    </div>
-</div>
-
-<!-- Períodos Rápidos -->
-<div class="quick-periods">
-    <button class="period-btn" onclick="filtrarPeriodo('hoje', event)">
-        <i class="fas fa-calendar-day"></i> Hoje
-    </button>
-    <button class="period-btn" onclick="filtrarPeriodo('semana', event)">
-        <i class="fas fa-calendar-week"></i> Esta Semana
-    </button>
-    <button class="period-btn" onclick="filtrarPeriodo('mes', event)">
-        <i class="fas fa-calendar"></i> Este Mês
-    </button>
-    <button class="period-btn" onclick="filtrarPeriodo('fim-semana', event)">
-        <i class="fas fa-umbrella-beach"></i> Fim de Semana
-    </button>
-</div>
+            <div class="quick-filters">
+                <div class="date-picker">
+                    <label><i class="fas fa-calendar-alt"></i> Data</label>
+                    <input type="date" id="dataFiltro" title="Selecionar data">
+                </div>
+                
+                <div class="filter-actions">
+                    <button class="btn-filter" onclick="buscarPorData()" title="Buscar">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                    <button class="btn-hoje" onclick="buscarHoje()" title="Jogos de hoje">
+                        <i class="fas fa-calendar-day"></i> Hoje
+                    </button>
+                    <button class="btn-refresh" onclick="atualizarJogos()" title="Atualizar">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
 
             <!-- Loading Skeleton -->
             <div id="loadingSkeleton" class="skeleton-container" style="display: none;">
@@ -139,21 +98,12 @@
         </main>
     </div>
 
-    <!-- Modal de Detalhes do Jogo -->
-    <div id="matchModal" class="modal">
-        <div class="modal-content glass-card">
-            <span class="close">&times;</span>
-            <div id="modalContent"></div>
-        </div>
-    </div>
-
     <!-- Botão Flutuante (Scroll to Top) -->
     <button class="fab" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Voltar ao topo">
         <i class="fas fa-arrow-up"></i>
     </button>
 
     <!-- Scripts -->
-    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
